@@ -24,13 +24,13 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Fetch and decode
         env:
-          STAMUS_FEED_URL: ${{ secrets.STAMUS_FEED_URL }}
+          NRD_URL: ${{ secrets.NRD_URL }}
         run: |
-          python scripts/fetch_decode_nrd.py --url "$STAMUS_FEED_URL" --outdir .
+          python scripts/fetch_decode_nrd.py --url "$NRD_URL" --outdir ./lists
 
       - name: Commit if changed
         run: |
@@ -38,7 +38,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add decoded-nrd-phishing-30day
+          git add lists/decoded-nrd-phishing-30day
 
           if git diff --cached --quiet; then
             echo "No changes"
